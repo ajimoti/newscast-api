@@ -8,6 +8,7 @@ Use App\Models\Comment;
 
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
@@ -44,6 +45,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    public function detail()
+    {
+        return Auth::user();
     }
 
 
