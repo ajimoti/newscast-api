@@ -24,7 +24,7 @@ class PostController extends Controller
 
         $this->validate($request, $this->validator->store());
 
-        $user = $this->user->username($request->username)->firstOrFail();
+        $user = $this->user->detail();
 
         $post = new \App\Models\Post([
             'slug'      => $slug,
@@ -50,7 +50,7 @@ class PostController extends Controller
     {
         $this->validate($request, $this->validator->update());
 
-        $user = $this->user->username($request->username)->firstOrFail();
+        $user = $this->user->detail();
 
         $post           = $this->post->slug($slug)->user($user->id)->firstOrFail();
         $post->title    = $request->title;

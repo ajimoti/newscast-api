@@ -8,7 +8,6 @@ class PostValidator
     public function store()
     {
         return [
-            'username'  => 'exists:users|required',
             'title'     => 'required',
             'content'   => 'required',
             'ipaddress'   => 'required',
