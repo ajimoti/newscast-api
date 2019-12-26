@@ -5,12 +5,12 @@ namespace App\Helpers\Validators;
 class AuthValidator
 {
 
-    public function store()
+    public function register()
     {
         return [
             'password'  => 'required|min:6',
             'email'     => 'required|email|unique:users',
-            'username'  => 'unique:users'
+            'username'  => 'unique:users|alpha'
         ];
     }
 

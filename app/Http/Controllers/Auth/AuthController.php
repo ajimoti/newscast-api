@@ -17,10 +17,10 @@ class AuthController extends Controller
         $this->validator = new AuthValidator;
     }
 
-    public function store(Request $request)
+    public function register(Request $request)
     {
 
-        $this->validate($request, $this->validator->store());
+        $this->validate($request, $this->validator->register());
 
         $user = $this->user::create([
             'email'     => $request->get('email'),
@@ -28,45 +28,51 @@ class AuthController extends Controller
             'password'  => Hash::make($request->get('password')),
         ]);
 
-        return sendJson("user added successfully", $user);
+        /**Take note of this: Your user authentication access token is generated here **/
+        $token  =  $user->createToken(env('APP_NAME'))->accessToken;
+
+        return sendJson("Account created successfully!", [
+            'user'      => $user,
+            'token'     => $token,
+            ]);
     }
 
-    public function verify(Request $request)
-    {
-        $this->validate($request, $this->validator->verify());
+    // public function login(Request $request)
+    // {
+    //     $this->validate($request, $this->validator->verify());
 
-        $password   = $request->get('password');
-        $username_or_email      = $request->get('username_or_email');
+    //     $password   = $request->get('password');
+    //     $username_or_email      = $request->get('username_or_email');
 
-        $user = $this->user::usernameOrEmail($username_or_email)->firstOrFail();
+    //     $user = $this->user::usernameOrEmail($username_or_email)->firstOrFail();
 
-        if($user AND Hash::check($password, $user->password))
-        {
-            return sendJson("user data gotten", $user);
-        }
+    //     if($user AND Hash::check($password, $user->password))
+    //     {
+    //         return sendJson("user data gotten", $user);
+    //     }
 
-        return abortJson(404, "User details incorrect");
+    //     return abortJson(404, "User details incorrect");
 
-    }
+    // }
 
-    public function userById($id)
-    {
-        $user = $this->user::firstOrFail($id);
+    // public function userById($id)
+    // {
+    //     $user = $this->user::firstOrFail($id);
 
-        return sendJson("user data gotten", $user);
-    }
+    //     return sendJson("user data gotten", $user);
+    // }
 
 
-    public function update(Request $request, $username)
-    {
-        $user = $this->user->username($username)->firstOrFail();
+    // public function update(Request $request, $username)
+    // {
+    //     $user = $this->user->username($username)->firstOrFail();
 
-        $this->validateRequest($request);
-        $user->email        = $request->get('email');
-        $user->password     = Hash::make($request->get('password'));
-        $user->save();
+    //     $this->validateRequest($request);
+    //     $user->email        = $request->get('email');
+    //     $user->password     = Hash::make($request->get('password'));
+    //     $user->save();
 
-        return sendJson("The user with with id {$username} has been updated", $user);
-    }
+    //     return sendJson("The user with with id {$username} has been updated", $user);
+    // }
 
 }

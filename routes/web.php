@@ -22,8 +22,8 @@ $router->group(['prefix' => 'api/v1/oauth', 'middleware' => 'client'], function 
 
     // User information
     $router->group(['prefix' => 'user'], function () use (&$router) {
-        $router->post('/add',  'Auth\AuthController@store');
-        $router->post('/detail',  'Auth\AuthController@verify');
+        $router->post('/register',  'Auth\AuthController@register');
+        // $router->post('/login',  'Auth\AuthController@login');
     });
 
     // Post Information
